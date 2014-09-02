@@ -23,7 +23,7 @@ function build {
     unset GIT_WORK_TREE
 
     cd ${OPENSHIFT_REPO_DIR}
-    sbt compile
+    ${OPENSHIFT_DATA_DIR}/sbt/bin/sbt compile
 }
 
 function tidy {
@@ -32,7 +32,7 @@ function tidy {
     rm -rf $OPENSHIFT_TMP_DIR/*
 
     cd $OPENSHIFT_REPO_DIR
-    sbt clean
+    ${OPENSHIFT_DATA_DIR}/sbt/bin/sbt clean
 }
 
 function catchall {
