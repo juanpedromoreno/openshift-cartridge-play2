@@ -2,10 +2,7 @@
 
 function start {
     cd $OPENSHIFT_REPO_DIR
-    # build on first time
-    [ -d target ] || build
-    rm -f target/universal/stage/RUNNING_PID
-    nohup target/universal/stage/bin/play -Duser.home=${OPENSHIFT_DATA_DIR} -Dhttp.port=8080 -Dhttp.address=${OPENSHIFT_PLAY2_IP} -DapplyEvolutions.default=true -mem 512 > $OPENSHIFT_PLAY2_LOG_DIR/play.log 2>&1 &
+    nohup ./start.sh >> $OPENSHIFT_SCALA_LOG_DIR/play2.log 2>&1  &
 }
 
 function stop {
@@ -26,12 +23,16 @@ function build {
     unset GIT_WORK_TREE
 
     cd ${OPENSHIFT_REPO_DIR}
-    activator clean stage -Duser.home=${OPENSHIFT_DATA_DIR} -mem 512
+    sbt compile
 }
 
 function tidy {
     shopt -s dotglob
+    rm -rf $OPENSHIFT_SCALA_LOG_DIR/*
     rm -rf $OPENSHIFT_TMP_DIR/*
+
+    cd $OPENSHIFT_REPO_DIR
+    sbt clean
 }
 
 function catchall {
